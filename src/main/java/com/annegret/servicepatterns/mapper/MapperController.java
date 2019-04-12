@@ -1,7 +1,7 @@
 package com.annegret.servicepatterns.mapper;
 
-import com.fasterxml.jackson.core.io.JsonEOFException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -12,19 +12,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 @RestController
 
 public class MapperController {
+
+    static Logger logger=LoggerFactory.getLogger(MapperController.class);
 
     @GetMapping(value = "mapping")
     public String mapped(@RequestParam("inputString") String inputString) throws JSONException {
 
         try {
             String returnString = mapp(inputString);
+            logger.info(inputString+" --> "+returnString);
             return returnString;
         } catch (JSONException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Master data for input string "+inputString+" not found");
@@ -79,16 +80,12 @@ public class MapperController {
             if (inputString.length() > 0) {
 
                 JSONObject toBeMapped = Configuration(0);
-                String toBeMappedCapital= (String)toBeMapped.get("capital");
-                String toBeMappedSmallLetter =(String)toBeMapped.get("smallLetter");
-
+                String toBeMappedCapital = (String)toBeMapped.get("capital");
+                String toBeMappedSmallLetter = (String) toBeMapped.get("smallLetter");
 
                 JSONObject newCharacter= Configuration(5);
                 String newCharacterCapital = (String)newCharacter.get("capital");
                 String newCharacterSmallLetter =(String) newCharacter.get("smallLetter");
-
-
-
 
                 String mappStringA = inputString.replace(toBeMappedCapital.charAt(0), newCharacterCapital.charAt(0));
                 String mappStringB = mappStringA.replace(toBeMappedSmallLetter.charAt(0), newCharacterSmallLetter.charAt(0));

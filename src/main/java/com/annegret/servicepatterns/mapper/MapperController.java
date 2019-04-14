@@ -2,8 +2,11 @@ package com.annegret.servicepatterns.mapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,16 +18,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @RestController
-
+@EnableAutoConfiguration
+@Configuration
 public class MapperController {
 
     static Logger logger=LoggerFactory.getLogger(MapperController.class);
+
+    @Value("${index}")
+    private int index;
 
     @GetMapping(value = "mapping")
     public String mapped(@RequestParam("inputString") String inputString) throws JSONException {
 
         try {
-            String returnString = mapp(inputString);
+            String returnString = mapp(inputString)+String.valueOf(index);
             logger.info(inputString+" --> "+returnString);
             return returnString;
         } catch (JSONException e) {
@@ -33,10 +40,10 @@ public class MapperController {
     }
 
 
-    //TODO Get Mapping information out of configuration
+
 
     private JSONObject Configuration(int configuration) throws JSONException {
-        //TODO Get configuration index out of configuration
+
 
         try {
             JSONObject mappingCharacter=getCharacterByIndex("http://localhost:8083/Character/", String.valueOf(configuration));
@@ -79,11 +86,12 @@ public class MapperController {
         try {
             if (inputString.length() > 0) {
 
-                JSONObject toBeMapped = Configuration(0);
+
+                JSONObject toBeMapped = Configuration(index);
                 String toBeMappedCapital = (String)toBeMapped.get("capital");
                 String toBeMappedSmallLetter = (String) toBeMapped.get("smallLetter");
 
-                JSONObject newCharacter= Configuration(5);
+                JSONObject newCharacter= Configuration(index+1);
                 String newCharacterCapital = (String)newCharacter.get("capital");
                 String newCharacterSmallLetter =(String) newCharacter.get("smallLetter");
 

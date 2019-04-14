@@ -27,8 +27,9 @@ public class MapperController {
     @Value("${index}")
     private int index;
 
-    @GetMapping(value = "mapping")
-    public String mapped(@RequestParam("inputString") String inputString) throws JSONException {
+    @GetMapping(value = "/mapping/{inputString}")
+    @ResponseBody
+    public String mapped(@PathVariable("inputString") String inputString) throws JSONException {
 
         try {
             String returnString = mapp(inputString)+String.valueOf(index);

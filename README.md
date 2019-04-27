@@ -16,4 +16,4 @@ Build docker image
 Run with docker
 ---
 
-	docker run -p 8082:8082 mapper:latest
+	docker run --network=host -p 8082:8082 mapper:latest

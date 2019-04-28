@@ -6,7 +6,7 @@ Run
 Test
 ---
 
-Open http://localhost:8082/mapping?inputString=Abc
+Open http://localhost:8082/mapping/Abc
 
 Build docker image 
 ---
@@ -16,4 +16,4 @@ Build docker image
 Run with docker
 ---
 
-	docker run -p 8082:8082 mapper:latest
+	docker run --network=host -p 8082:8082 mapper:latest

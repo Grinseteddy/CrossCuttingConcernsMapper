@@ -40,12 +40,7 @@ public class MapperController {
         }
     }
 
-
-
-
     private JSONObject Configuration(int configuration) throws JSONException {
-
-
         try {
             JSONObject mappingCharacter=getCharacterByIndex("http://localhost:8083/Character/", String.valueOf(configuration));
             return mappingCharacter;

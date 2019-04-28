@@ -6,7 +6,7 @@ Run
 Test
 ---
 
-Open http://localhost:8082/mapping?inputString=Abc
+Open http://localhost:8082/mapping/Abc
 
 Build docker image 
 ---
